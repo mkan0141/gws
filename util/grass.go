@@ -3,8 +3,12 @@ package util
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
+	"os/exec"
 	"regexp"
 	"strings"
+
+	"github.com/canhlinh/svg2png"
 )
 
 func GetGrassSVG(username string) string {
@@ -19,4 +23,15 @@ func GetGrassSVG(username string) string {
 	svg = strings.Replace(svg, `class="month"`, `fill="#767676" font-size="9"`, -1)
 	svg = strings.Replace(svg, `class="wday"`, `fill="#767676" font-size="9"`, -1)
 	return svg
+}
+
+func Svg2Png(svg, outputFilePath string) {
+	file, _ := os.Create(".tmp.html")
+	defer file.Close()
+	file.Write(([]byte)(svg))
+
+	chrome := svg2png.NewChrome().SetHeight(128).SetWith(828)
+	chrome.Screenshoot(".tmp.html", outputFilePath)
+	exec.Command("open", outputFilePath).Run()
+	exec.Command("rm", ".tmp.html").Run()
 }
