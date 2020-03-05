@@ -1,10 +1,10 @@
 package util
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"strings"
 )
 
 func GetGrassSVG(username string) string {
@@ -14,9 +14,9 @@ func GetGrassSVG(username string) string {
 	byteArray, _ := ioutil.ReadAll(resp.Body)
 	exp := regexp.MustCompile(`(?s)<svg(.*)<\/svg>`)
 	svg := exp.FindAllStringSubmatch(string(byteArray), -1)[0][0]
-	return svg
-}
 
-func main() {
-	fmt.Println(GetGrassSVG("mkan0141"))
+	// svgのスタイルを調整する
+	svg = strings.Replace(svg, `class="month"`, `fill="#767676" font-size="9"`, -1)
+	svg = strings.Replace(svg, `class="wday"`, `fill="#767676" font-size="9"`, -1)
+	return svg
 }
