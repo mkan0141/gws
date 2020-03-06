@@ -30,7 +30,7 @@ func Svg2Png(svg, outputFilePath string) {
 	defer file.Close()
 	file.Write(([]byte)(svg))
 
-	chrome := svg2png.NewChrome().SetHeight(128).SetWith(828)
+	chrome := svg2png.NewChrome().SetHeight(128).SetWith(848)
 	chrome.Screenshoot(".tmp.html", outputFilePath)
 	exec.Command("open", outputFilePath).Run()
 	exec.Command("rm", ".tmp.html").Run()
